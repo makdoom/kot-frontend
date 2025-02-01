@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   return (
-    <main className="p-4">
+    <main>
       <Outlet /> {/* Renders the current page */}
     </main>
   );
