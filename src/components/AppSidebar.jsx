@@ -71,12 +71,6 @@ const menusList = [
         menuName: "menu-item",
         pathName: "master/menu-item",
       },
-      {
-        id: nanoid(),
-        name: "Common Master",
-        menuName: "common",
-        pathName: "master/common",
-      },
     ],
   },
   {

@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Pagination } from "./Pagination";
 import { ViewOptions } from "./ViewOptions";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Input } from "../ui/input";
 
 const GridTable = ({ data, columns }) => {
   const [sorting, setSorting] = useState([]);
@@ -40,7 +41,16 @@ const GridTable = ({ data, columns }) => {
   });
   return (
     <Card className="h-full">
-      <CardHeader>
+      <CardHeader className="flex items-center flex-row">
+        <Input
+          type="search"
+          name="search"
+          autoFocus
+          placeholder="Search ..."
+          className="text-sm w-[250px] h-9 font-normal"
+          // value={form.email}
+          // onChange={handleChange}
+        />
         <ViewOptions table={table} />
       </CardHeader>
       <CardContent className="relative flex">
