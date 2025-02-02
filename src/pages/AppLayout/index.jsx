@@ -11,7 +11,9 @@ const AppLayout = () => {
         <main className="w-full">
           <Header />
 
-          <Outlet />
+          <div className="bg-[#f8f8f8] h-[calc(100vh-61px)]">
+            <Outlet />
+          </div>
         </main>
       </SidebarProvider>
     </div>

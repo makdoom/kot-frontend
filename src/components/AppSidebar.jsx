@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import {
   Sidebar,
   SidebarContent,
@@ -26,57 +27,67 @@ import { cn } from "@/lib/utils";
 
 const menusList = [
   {
+    id: nanoid(),
     name: "Dashboard",
     menuName: "dashboard",
-    pathName: "app",
+    pathName: "/app",
     icon: <LayoutDashboard className="size-4" />,
     children: [],
   },
   {
+    id: nanoid(),
     name: "Master",
     menuName: "master",
     pathName: "",
     icon: <SquareLibrary className="size-4" />,
     children: [
       {
+        id: nanoid(),
         name: "Company",
         menuName: "company",
         pathName: "master/company",
       },
       {
+        id: nanoid(),
         name: "Role",
         menuName: "role",
         pathName: "master/role",
       },
       {
+        id: nanoid(),
         name: "User",
         menuName: "user",
-        pathName: "master/User",
+        pathName: "master/user",
       },
       {
+        id: nanoid(),
         name: "Table",
         menuName: "table",
         pathName: "master/table",
       },
       {
+        id: nanoid(),
         name: "Menu Item",
         menuName: "menu-item",
         pathName: "master/menu-item",
       },
       {
+        id: nanoid(),
         name: "Common Master",
-        menuName: "common-master",
-        pathName: "master/common-master",
+        menuName: "common",
+        pathName: "master/common",
       },
     ],
   },
   {
+    id: nanoid(),
     name: "Configuration",
     menuName: "configuration",
     icon: <Bolt className="size-4" />,
     pathName: "",
     children: [
       {
+        id: nanoid(),
         name: "Role Menu Allocation",
         menuName: "role-menu-allocation",
         pathName: "configuration/role-menu-allocation",
@@ -84,17 +95,20 @@ const menusList = [
     ],
   },
   {
+    id: nanoid(),
     name: "Transaction",
     menuName: "transaction",
     icon: <BadgeIndianRupee className="size-4" />,
     pathName: "",
     children: [
       {
+        id: nanoid(),
         name: "KOT",
         menuName: "kot",
         pathName: "transaction/kot",
       },
       {
+        id: nanoid(),
         name: "Billing",
         menuName: "billing",
         pathName: "transaction/billing",
@@ -109,7 +123,7 @@ const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="p-3 flex items-center space-x-3">
+        <div className="p-3 flex items-center space-x-3 bg-white rounded-md">
           <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
             <p className="text-lg font-bold text-white ">K</p>
           </div>
@@ -118,7 +132,7 @@ const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu>
+          <SidebarMenu className="bg-white rounded-md py-4 px-2">
             {menusList.map((item, index) =>
               item.children.length ? (
                 <Collapsible
@@ -128,10 +142,7 @@ const AppSidebar = () => {
                 >
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton
-                        className={cn("flex items-center")}
-                        // isActive={pathName == item.pathName}
-                      >
+                      <SidebarMenuButton className={cn("flex items-center")}>
                         <div className="flex items-center space-x-2">
                           {item.icon}
                           <p>{item.name}</p>
@@ -145,7 +156,7 @@ const AppSidebar = () => {
                           <SidebarMenuSubItem className="text-sm">
                             <SidebarMenuButton
                               className={cn(
-                                "flex items-center",
+                                "flex items-center p-0",
                                 pathName == subItem.menuName &&
                                   "!bg-primary !text-white"
                               )}
@@ -153,7 +164,7 @@ const AppSidebar = () => {
                             >
                               <Link
                                 to={subItem.pathName}
-                                className="flex items-center space-x-2 w-full"
+                                className="flex items-center space-x-2 w-full p-2"
                               >
                                 {subItem.name}
                               </Link>
@@ -171,13 +182,14 @@ const AppSidebar = () => {
                     <SidebarMenuButton
                       isActive={pathName == item.pathName}
                       className={cn(
-                        "flex items-center",
-                        pathName == item.pathName && "!bg-primary !text-white"
+                        "flex items-center p-0",
+                        pathName == item.pathName.replace("/", "") &&
+                          "!bg-primary !text-white"
                       )}
                     >
                       <Link
                         to={item.pathName}
-                        className="flex items-center space-x-2 w-full"
+                        className="flex items-center space-x-2 w-full p-2"
                       >
                         {item.icon}
                         <p>{item.name}</p>
