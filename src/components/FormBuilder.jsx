@@ -1,3 +1,4 @@
+import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 
 const controlsCreator = ({
@@ -58,6 +59,22 @@ const controlsCreator = ({
           value={value}
           onChange={(e) => handleChange(id, e.target.value, colName)}
         />
+      );
+    case "check":
+      return (
+        <div className="flex items-center space-x-2 mt-3">
+          <Checkbox
+            id={colName}
+            checked={value}
+            onCheckedChange={(value) => handleChange(id, value, colName)}
+          />
+          <label
+            htmlFor={colName}
+            className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-muted-foreground"
+          >
+            {name}
+          </label>
+        </div>
       );
     default:
       return "";
