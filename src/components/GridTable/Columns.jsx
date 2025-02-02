@@ -153,7 +153,7 @@ export const columnsCreator = (controls = []) => {
   const columns = controls
     .filter((item) => item.visibleInd)
     .map((item) => ({
-      id: item.id,
+      id: item.name,
       accessorKey: item.colName,
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={item.name} />

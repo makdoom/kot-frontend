@@ -74,7 +74,7 @@ const GridTable = ({ data, columns }) => {
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody className="">
+            <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
@@ -92,10 +92,10 @@ const GridTable = ({ data, columns }) => {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
+                <TableRow className="hover:bg-white">
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-full text-center"
                   >
                     No results.
                   </TableCell>
