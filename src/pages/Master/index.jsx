@@ -195,7 +195,7 @@ const Master = () => {
       <MasterHeader formName={formName} />
 
       <div className="my-3 flex-1 ">
-        <GridTable data={[]} columns={columnList} />
+        <GridTable key={formName} data={[]} columns={columnList} />
       </div>
     </div>
   );
