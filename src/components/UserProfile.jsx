@@ -1,11 +1,31 @@
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { getRequest } from "@/config/api";
+
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
+  const navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    try {
+      const { success } = await getRequest("/auth/logout");
+      if (success) {
+        localStorage.setItem("accessToken", "");
+        navigate("/auth/login");
+      } else {
+        toast.error("Something went wrong while loggin out user");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -20,7 +40,9 @@ const UserProfile = () => {
         <DropdownMenuItem>Account</DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuItem>Help</DropdownMenuItem>
-        <DropdownMenuItem className="text-red-500">Logout</DropdownMenuItem>
+        <DropdownMenuItem className="text-red-500" onClick={logoutHandler}>
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

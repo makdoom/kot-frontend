@@ -10,18 +10,41 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { UtensilsCrossed } from "lucide-react";
+import { postRequest } from "@/config/api";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Login = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({ username: "", password: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in with:", form);
+
+    try {
+      const { data } = await postRequest("/auth/login", {
+        username: form.username,
+        userpassword: form.password,
+        machinename: "127.0.0.1",
+      });
+      localStorage.setItem("accessToken", data.accessToken);
+      navigate("/app");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/app");
+    }
+  });
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -36,12 +59,12 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              type="email"
-              name="email"
+              type="text"
+              name="username"
               autoFocus
-              placeholder="Email Address"
+              placeholder="Username"
               className="p-3 py-5 text-sm"
-              value={form.email}
+              value={form.username}
               onChange={handleChange}
               required
             />
