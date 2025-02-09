@@ -6,6 +6,10 @@ import { columnsCreator } from "@/components/GridTable/Columns";
 import { useState } from "react";
 import { useEffect } from "react";
 import { formControls, formIdLookup } from "@/lib/controls";
+import { toast } from "sonner";
+import { formNameEndpointLookupResolver } from "@/lib/utils";
+import { postRequest } from "@/config/api";
+import { nanoid } from "nanoid";
 
 // const data = [
 //   {
@@ -180,14 +184,219 @@ import { formControls, formIdLookup } from "@/lib/controls";
 //   },
 // ];
 
+// const data = [
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+//   {
+//     role_id: 1,
+//     role_name: "ADMIN",
+//     role_desc: "Administrator",
+//     rec_status: 1,
+//     client_id: 1,
+//   },
+// ];
+
 const Master = () => {
   const { pathname } = useLocation();
+
+  const [data, setData] = useState([]);
+
   const formName = pathname?.split("/")?.at(-1);
 
   const [columnList, setColumnList] = useState([]);
-
+  console.log(columnList);
   useEffect(() => {
     setColumnList(columnsCreator(formControls[formIdLookup[formName]]));
+  }, [formName]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = formNameEndpointLookupResolver(formName, "list");
+        console.log(url);
+        const response = await postRequest(`/master/${url}`, {
+          clientid: 1,
+          locationid: 1,
+          iMode: formName?.toUpperCase(),
+          iSearchText: "",
+        });
+        if (response.success) {
+          setData(response.data?.map((item) => ({ ...item, id: nanoid() })));
+        }
+      } catch (error) {
+        toast.error(
+          error.message || `Something went wrong while fetching ${formName}`
+        );
+      }
+    };
+
+    fetchData();
   }, [formName]);
 
   return (
@@ -195,7 +404,7 @@ const Master = () => {
       <MasterHeader formName={formName} />
 
       <div className="my-3 flex-1 ">
-        <GridTable key={formName} data={[]} columns={columnList} />
+        <GridTable key={formName} data={data} columns={columnList} />
       </div>
     </div>
   );

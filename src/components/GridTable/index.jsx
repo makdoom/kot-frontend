@@ -55,7 +55,7 @@ const GridTable = ({ data, columns }) => {
       </CardHeader>
       <CardContent className="relative flex">
         <div className="rounded-md border relative h-[calc(100vh-300px)] w-[calc(100vw-600px)] overflow-x-scroll flex-1">
-          <Table className="h-[400px] overflow-y-hidden">
+          <Table className="overflow-y-hidden">
             <TableHeader className="sticky top-0 bg-gray-100 z-10">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -80,9 +80,13 @@ const GridTable = ({ data, columns }) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="!h-[25px]"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-1 px-2 text-xs h-5">
+                      <TableCell
+                        key={cell.id}
+                        className="p-1 px-2 text-xs !h-[25px]"
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
