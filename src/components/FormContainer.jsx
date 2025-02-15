@@ -1,8 +1,16 @@
 import FormBuilder from "./FormBuilder";
 import { DialogDescription, DialogFooter, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { Loader } from "lucide-react";
 
-const FormContainer = ({ heading, formControls, handleChange }) => {
+const FormContainer = ({
+  isLoading,
+  heading,
+  formControls,
+  handleChange,
+  handleClose,
+  handleSave,
+}) => {
   return (
     <div>
       <DialogTitle className="text-normal font-medium">{heading}</DialogTitle>
@@ -13,10 +21,21 @@ const FormContainer = ({ heading, formControls, handleChange }) => {
       </div>
 
       <DialogFooter className="flex items-center justify-end w-full space-x-2 mt-8">
-        <Button variant="secondary" className="text-sm px-6">
+        <Button
+          variant="secondary"
+          className="text-sm px-6"
+          onClick={handleClose}
+        >
           Cancel
         </Button>
-        <Button className="text-sm px-6">Save</Button>
+        <Button
+          className="text-sm px-6"
+          onClick={handleSave}
+          disabled={isLoading}
+        >
+          <span>{isLoading ? "Saving..." : "Save"}</span>
+          {isLoading && <Loader className="animate-spin" />}
+        </Button>
       </DialogFooter>
     </div>
   );

@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { formNameEndpointLookupResolver } from "@/lib/utils";
 import { postRequest } from "@/config/api";
 import { nanoid } from "nanoid";
+import { useAtom } from "jotai";
+import { masterDataAtom } from "@/atoms/masterAtoms";
 
 // const data = [
 //   {
@@ -365,12 +367,12 @@ import { nanoid } from "nanoid";
 const Master = () => {
   const { pathname } = useLocation();
 
-  const [data, setData] = useState([]);
+  const [masterData, setMasterData] = useAtom(masterDataAtom);
+  // const [data, setData] = useState([]);
+  const [columnList, setColumnList] = useState([]);
 
   const formName = pathname?.split("/")?.at(-1);
 
-  const [columnList, setColumnList] = useState([]);
-  console.log(columnList);
   useEffect(() => {
     setColumnList(columnsCreator(formControls[formIdLookup[formName]]));
   }, [formName]);
@@ -379,7 +381,6 @@ const Master = () => {
     const fetchData = async () => {
       try {
         const url = formNameEndpointLookupResolver(formName, "list");
-        console.log(url);
         const response = await postRequest(`/master/${url}`, {
           clientid: 1,
           locationid: 1,
@@ -387,7 +388,9 @@ const Master = () => {
           iSearchText: "",
         });
         if (response.success) {
-          setData(response.data?.map((item) => ({ ...item, id: nanoid() })));
+          setMasterData(
+            response.data?.map((item) => ({ ...item, id: nanoid() }))
+          );
         }
       } catch (error) {
         toast.error(
@@ -397,14 +400,14 @@ const Master = () => {
     };
 
     fetchData();
-  }, [formName]);
+  }, [formName, setMasterData]);
 
   return (
     <div className="h-full p-4 flex flex-col">
       <MasterHeader formName={formName} />
 
       <div className="my-3 flex-1 ">
-        <GridTable key={formName} data={data} columns={columnList} />
+        <GridTable key={formName} data={masterData} columns={columnList} />
       </div>
     </div>
   );

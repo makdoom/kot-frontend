@@ -17,7 +17,7 @@ export const capitalize = (str) => {
 
 const formEndpointLookups = {
   role: {
-    create: "",
+    create: "create",
     list: "",
   },
 };
@@ -29,5 +29,5 @@ export const formNameEndpointLookupResolver = (
   if (!formName || !operation) return "";
 
   if (operation == "list") return formName;
-  return formEndpointLookups[formName][operation];
+  return `${formName}/${formEndpointLookups[formName][operation]}`;
 };
